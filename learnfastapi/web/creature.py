@@ -7,6 +7,6 @@ app = FastAPI()
 
 @app.get("/creature")
 def get_all() -> list[Creature]:
-    from learnfastapi.fake.creature import get_creatures
+    from learnfastapi.fake.creature import get_all
 
-    return get_creatures()
+    return get_all()

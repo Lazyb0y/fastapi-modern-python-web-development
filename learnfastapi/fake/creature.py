@@ -1,22 +1,52 @@
 from learnfastapi.model.creature import Creature
 
-fakes = [
+_creatures = [
     Creature(
-        name="yeti",
+        name="Yeti",
+        aka="Abominable Snowman",
         country="CN",
         area="Himalayas",
         description="Hirsute Himalayan",
-        aka="Abominable Snowman",
     ),
     Creature(
-        name="sasquatch",
+        name="Bigfoot",
+        description="Yeti's Cousin Eddie",
         country="US",
         area="*",
-        description="Yeti's Cousin Eddie",
-        aka="Bigfoot",
+        aka="Sasquatch",
     ),
 ]
 
 
-def get_creatures() -> list[Creature]:
-    return fakes
+def get_all() -> list[Creature]:
+    return _creatures
+
+
+def get_one(name: str) -> Creature | None:
+    for creature in _creatures:
+        if creature.name == name:
+            return creature
+    return None
+
+
+# The following are nonfunctional for now,
+# so they just act like they work, without modifying
+# the actual fake _creatures list:
+def create(creature: Creature) -> Creature:
+    """Add a creature"""
+    return creature
+
+
+def modify(creature: Creature) -> Creature:
+    """Partially modify a creature"""
+    return creature
+
+
+def replace(creature: Creature) -> Creature:
+    """Completely replace a creature"""
+    return creature
+
+
+def delete(name: str):
+    """Delete a creature; return None if it existed"""
+    return None
