@@ -40,10 +40,11 @@ def get_all() -> list[Creature]:
     return [row_to_model(row) for row in rows]
 
 
-def create(creature: Creature) -> None:
+def create(creature: Creature) -> Creature:
     qry = "INSERT INTO creature VALUES (:name, :description, :country, :area, :aka)"
     params = model_to_dict(creature)
     curs.execute(qry, params)
+    return creature
 
 
 def modify(creature: Creature) -> Creature:
@@ -54,7 +55,7 @@ def replace(creature: Creature) -> Creature:
     return creature
 
 
-def delete(creature: Creature):
+def delete(name: str):
     qry = "DELETE FROM creature WHERE name=:name"
-    params = {"name": creature.name}
+    params = {"name": name}
     curs.execute(qry, params)
