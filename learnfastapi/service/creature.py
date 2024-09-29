@@ -1,5 +1,5 @@
 from learnfastapi.model.creature import Creature
-import learnfastapi.fake.creature as data
+import learnfastapi.data.creature as data
 
 
 def get_all() -> list[Creature]:
