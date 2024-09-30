@@ -4,22 +4,25 @@ from learnfastapi.model.creature import Creature
 curs.execute(
     """CREATE TABLE IF NOT EXISTS creature(
        name text primary key,
-       description text,
        country text,
+       description text,
        area text,
        aka text)"""
 )
 
 
 def row_to_model(row: tuple) -> Creature:
-    (name, description, country, area, aka) = row
+    (name, country, description, area, aka) = row
     return Creature(
-        name=name, description=description, country=country, area=area, aka=aka
+        name=name, country=country, description=description, area=area, aka=aka
     )
 
 
-def model_to_dict(creature: Creature) -> dict:
-    return creature.dict()
+def model_to_dict(creature: Creature) -> dict | None:
+    if creature:
+        return creature.dict()
+    else:
+        return None
 
 
 def get_one(name: str) -> Creature:
@@ -36,16 +39,17 @@ def get_all() -> list[Creature]:
 
 
 def create(creature: Creature) -> Creature:
-    qry = "INSERT INTO creature VALUES (:name, :description, :country, :area, :aka)"
+    qry = """INSERT INTO creature (name, country, description, area, aka)
+             VALUES (:name, :country, :description, :area, :aka)"""
     params = model_to_dict(creature)
-    curs.execute(qry, params)
+    _ = curs.execute(qry, params)
     return get_one(creature.name)
 
 
 def modify(creature: Creature) -> Creature:
     qry = """UPDATE creature
-             SET country=:country,
-                 name=:name,
+             SET name=:name,
+                 country=:country,
                  description=:description,
                  area=:area,
                  aka=:aka
