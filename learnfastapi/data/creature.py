@@ -1,23 +1,20 @@
-import sqlite3
+from .init import curs
 from learnfastapi.model.creature import Creature
 
-DB_NAME = "cryptid.db"
-conn = sqlite3.connect(DB_NAME)
-curs = conn.cursor()
-
-
-def init():
-    curs.execute("CREATE TABLE creature(name, description, country, area, aka)")
+curs.execute(
+    """CREATE TABLE IF NOT EXISTS creature(
+       name text primary key,
+       description text,
+       country text,
+       area text,
+       aka text)"""
+)
 
 
 def row_to_model(row: tuple) -> Creature:
-    name, description, country, area, aka = row
+    (name, description, country, area, aka) = row
     return Creature(
-        name=name,
-        description=description,
-        country=country,
-        area=area,
-        aka=aka,
+        name=name, description=description, country=country, area=area, aka=aka
     )
 
 
@@ -29,33 +26,38 @@ def get_one(name: str) -> Creature:
     qry = "SELECT * FROM creature WHERE name=:name"
     params = {"name": name}
     curs.execute(qry, params)
-    row = curs.fetchone()
-    return row_to_model(row)
+    return row_to_model(curs.fetchone())
 
 
 def get_all() -> list[Creature]:
     qry = "SELECT * FROM creature"
     curs.execute(qry)
-    rows = curs.fetchall()
-    return [row_to_model(row) for row in rows]
+    return [row_to_model(row) for row in curs.fetchall()]
 
 
 def create(creature: Creature) -> Creature:
     qry = "INSERT INTO creature VALUES (:name, :description, :country, :area, :aka)"
     params = model_to_dict(creature)
     curs.execute(qry, params)
-    return creature
+    return get_one(creature.name)
 
 
 def modify(creature: Creature) -> Creature:
-    return creature
+    qry = """UPDATE creature
+             SET country=:country,
+                 name=:name,
+                 description=:description,
+                 area=:area,
+                 aka=:aka
+             WHERE name=:name_orig"""
+    params = model_to_dict(creature)
+    params["name_orig"] = creature.name
+    _ = curs.execute(qry, params)
+    return get_one(creature.name)
 
 
-def replace(creature: Creature) -> Creature:
-    return creature
-
-
-def delete(name: str):
+def delete(name: str) -> bool:
     qry = "DELETE FROM creature WHERE name=:name"
     params = {"name": name}
-    curs.execute(qry, params)
+    res = curs.execute(qry, params)
+    return bool(res)
