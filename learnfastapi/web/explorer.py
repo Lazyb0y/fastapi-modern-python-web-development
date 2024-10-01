@@ -6,7 +6,7 @@ router = APIRouter(prefix="/explorer")
 
 
 @router.get("/")
-def top() -> list[Explorer]:
+def get_all() -> list[Explorer]:
     return service.get_all()
 
 
