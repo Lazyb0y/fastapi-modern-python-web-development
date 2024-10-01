@@ -11,7 +11,7 @@ def get_all() -> list[Creature]:
 
 
 @router.get("/{name}")
-def get_one(name) -> Creature:
+def get_one(name: str) -> Creature | None:
     return service.get_one(name)
 
 
@@ -31,5 +31,5 @@ def replace(creature: Creature) -> Creature:
 
 
 @router.delete("/{name}")
-def delete(name: str):
+def delete(name: str) -> bool:
     return service.delete(name)
