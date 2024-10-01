@@ -1,5 +1,5 @@
 from learnfastapi.model.explorer import Explorer
-import learnfastapi.fake.explorer as data
+import learnfastapi.data.explorer as data
 
 
 def get_all() -> list[Explorer]:
