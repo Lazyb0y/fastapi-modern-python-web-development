@@ -2,7 +2,7 @@ from .init import curs
 from learnfastapi.model.explorer import Explorer
 
 curs.execute(
-    """CREATE TABLE IF NOTt EXISTS explorer(
+    """CREATE TABLE IF NOT EXISTS explorer(
        name text primary key,
        country text,
        description text)"""
