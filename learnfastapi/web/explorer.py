@@ -16,16 +16,19 @@ def get_one(name: str) -> Explorer | None:
     return service.get_one(name)
 
 
+@router.get("")
 @router.post("/")
 def create(explorer: Explorer) -> Explorer:
     return service.create(explorer)
 
 
+@router.get("")
 @router.patch("/")
 def modify(explorer: Explorer) -> Explorer:
     return service.modify(explorer)
 
 
+@router.get("")
 @router.put("/")
 def replace(explorer: Explorer) -> Explorer:
     return service.replace(explorer)
