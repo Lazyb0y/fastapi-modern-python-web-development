@@ -1,4 +1,4 @@
-from .init import curs
+from .init import conn, curs
 from learnfastapi.model.explorer import Explorer
 
 curs.execute(
@@ -39,6 +39,7 @@ def create(explorer: Explorer) -> Explorer:
              VALUES (:name, :country, :description)"""
     params = model_to_dict(explorer)
     _ = curs.execute(qry, params)
+    conn.commit()
     return get_one(explorer.name)
 
 

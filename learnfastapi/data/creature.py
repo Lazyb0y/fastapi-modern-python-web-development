@@ -1,4 +1,4 @@
-from .init import curs
+from .init import conn, curs
 from learnfastapi.model.creature import Creature
 
 curs.execute(
@@ -43,6 +43,7 @@ def create(creature: Creature) -> Creature:
              VALUES (:name, :country, :description, :area, :aka)"""
     params = model_to_dict(creature)
     _ = curs.execute(qry, params)
+    conn.commit()
     return get_one(creature.name)
 
 
