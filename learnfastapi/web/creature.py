@@ -16,8 +16,8 @@ def get_one(name: str) -> Creature:
     return service.get_one(name)
 
 
-@router.post("")
-@router.post("/")
+@router.post("", status_code=201)
+@router.post("/", status_code=201)
 def create(creature: Creature) -> Creature | None:
     return service.create(creature)
 

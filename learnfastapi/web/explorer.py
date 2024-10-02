@@ -16,8 +16,8 @@ def get_one(name: str) -> Explorer:
     return service.get_one(name)
 
 
-@router.post("")
-@router.post("/")
+@router.post("", status_code=201)
+@router.post("/", status_code=201)
 def create(explorer: Explorer) -> Explorer | None:
     return service.create(explorer)
 
