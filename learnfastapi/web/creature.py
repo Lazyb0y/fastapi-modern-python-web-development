@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from fastapi import status, APIRouter, HTTPException
+from learnfastapi.errors import DuplicateError, MissingError
 from learnfastapi.model.creature import Creature
 import learnfastapi.service.creature as service
 
@@ -13,20 +14,32 @@ def get_all() -> list[Creature]:
 
 @router.get("/{name}")
 def get_one(name: str) -> Creature:
-    return service.get_one(name)
+    try:
+        return service.get_one(name)
+    except MissingError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.message)
 
 
-@router.post("", status_code=201)
-@router.post("/", status_code=201)
+@router.post("", status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 def create(creature: Creature) -> Creature | None:
-    return service.create(creature)
+    try:
+        return service.create(creature)
+    except DuplicateError as e:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=e.message)
 
 
 @router.patch("/{name}")
 def modify(name: str, creature: Creature) -> Creature | None:
-    return service.modify(name, creature)
+    try:
+        return service.modify(name, creature)
+    except MissingError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.message)
 
 
 @router.delete("/{name}")
 def delete(name: str) -> bool:
-    return service.delete(name)
+    try:
+        return service.delete(name)
+    except MissingError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.message)
