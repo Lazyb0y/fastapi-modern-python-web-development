@@ -21,7 +21,7 @@ def row_to_model(row: tuple) -> Creature:
 
 def model_to_dict(creature: Creature) -> dict | None:
     if creature:
-        return creature.dict()
+        return creature.model_dump()
     else:
         return None
 
