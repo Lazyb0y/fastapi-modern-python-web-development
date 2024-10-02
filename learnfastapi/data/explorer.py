@@ -1,4 +1,5 @@
-from .init import conn, curs
+from .init import conn, curs, IntegrityError
+from learnfastapi.errors import DuplicateError, MissingError
 from learnfastapi.model.explorer import Explorer
 
 curs.execute(
@@ -24,26 +25,41 @@ def model_to_dict(explorer: Explorer) -> dict | None:
 def get_one(name: str) -> Explorer:
     qry = "SELECT * FROM explorer WHERE name=:name"
     params = {"name": name}
-    curs.execute(qry, params)
-    return row_to_model(curs.fetchone())
+    _ = curs.execute(qry, params)
+    row = curs.fetchone()
+    if row:
+        return row_to_model(curs.fetchone())
+    else:
+        raise MissingError(f"Explorer {name} not found")
 
 
 def get_all() -> list[Explorer]:
     qry = "SELECT * FROM explorer"
-    curs.execute(qry)
+    _ = curs.execute(qry)
     return [row_to_model(row) for row in curs.fetchall()]
 
 
-def create(explorer: Explorer) -> Explorer:
+def create(explorer: Explorer) -> Explorer | None:
+    if not explorer:
+        return None
+
     qry = """INSERT INTO explorer (name, country, description)
              VALUES (:name, :country, :description)"""
     params = model_to_dict(explorer)
-    _ = curs.execute(qry, params)
-    conn.commit()
+
+    try:
+        _ = curs.execute(qry, params)
+        conn.commit()
+    except IntegrityError:
+        raise DuplicateError(f"Explorer {explorer.name} already exists")
+
     return get_one(explorer.name)
 
 
-def modify(explorer: Explorer) -> Explorer:
+def modify(explorer: Explorer) -> Explorer | None:
+    if not explorer:
+        return None
+
     qry = """UPDATE explorer
              SET name=:name,
                  country=:country,
@@ -52,13 +68,24 @@ def modify(explorer: Explorer) -> Explorer:
     params = model_to_dict(explorer)
     params["name_orig"] = explorer.name
     _ = curs.execute(qry, params)
-    return get_one(explorer.name)
     conn.commit()
+
+    if curs.rowcount == 1:
+        return get_one(explorer.name)
+    else:
+        raise MissingError(f"Explorer {explorer.name} not found")
 
 
 def delete(name: str) -> bool:
+    if not name:
+        return False
+
     qry = "DELETE FROM explorer WHERE name=:name"
     params = {"name": name}
-    res = curs.execute(qry, params)
-    return bool(res)
+    _ = curs.execute(qry, params)
     conn.commit()
+
+    if curs.rowcount != 1:
+        raise MissingError(f"Explorer {name} not found")
+
+    return True

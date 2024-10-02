@@ -1,4 +1,5 @@
-from .init import conn, curs
+from .init import conn, curs, IntegrityError
+from learnfastapi.errors import DuplicateError, MissingError
 from learnfastapi.model.creature import Creature
 
 curs.execute(
@@ -28,26 +29,41 @@ def model_to_dict(creature: Creature) -> dict | None:
 def get_one(name: str) -> Creature:
     qry = "SELECT * FROM creature WHERE name=:name"
     params = {"name": name}
-    curs.execute(qry, params)
-    return row_to_model(curs.fetchone())
+    _ = curs.execute(qry, params)
+    row = curs.fetchone()
+    if row:
+        return row_to_model(curs.fetchone())
+    else:
+        raise MissingError(f"Creature {name} not found")
 
 
 def get_all() -> list[Creature]:
     qry = "SELECT * FROM creature"
-    curs.execute(qry)
+    _ = curs.execute(qry)
     return [row_to_model(row) for row in curs.fetchall()]
 
 
-def create(creature: Creature) -> Creature:
+def create(creature: Creature) -> Creature | None:
+    if not creature:
+        return None
+
     qry = """INSERT INTO creature (name, country, description, area, aka)
              VALUES (:name, :country, :description, :area, :aka)"""
     params = model_to_dict(creature)
-    _ = curs.execute(qry, params)
-    conn.commit()
+
+    try:
+        _ = curs.execute(qry, params)
+        conn.commit()
+    except IntegrityError:
+        raise DuplicateError(f"Creature {creature.name} already exists")
+
     return get_one(creature.name)
 
 
-def modify(creature: Creature) -> Creature:
+def modify(creature: Creature) -> Creature | None:
+    if not creature:
+        return None
+
     qry = """UPDATE creature
              SET name=:name,
                  country=:country,
@@ -58,13 +74,24 @@ def modify(creature: Creature) -> Creature:
     params = model_to_dict(creature)
     params["name_orig"] = creature.name
     _ = curs.execute(qry, params)
-    return get_one(creature.name)
     conn.commit()
+
+    if curs.rowcount == 1:
+        return get_one(creature.name)
+    else:
+        raise MissingError(f"Creature {creature.name} not found")
 
 
 def delete(name: str) -> bool:
+    if not name:
+        return False
+
     qry = "DELETE FROM creature WHERE name=:name"
     params = {"name": name}
-    res = curs.execute(qry, params)
-    return bool(res)
+    _ = curs.execute(qry, params)
     conn.commit()
+
+    if curs.rowcount != 1:
+        raise MissingError(f"Creature {name} not found")
+
+    return True
