@@ -6,7 +6,7 @@ def get_all() -> list[Explorer]:
     return data.get_all()
 
 
-def get_one(name: str) -> Explorer | None:
+def get_one(name: str) -> Explorer:
     return data.get_one(name)
 
 

@@ -12,7 +12,7 @@ def get_all() -> list[Explorer]:
 
 
 @router.get("/{name}")
-def get_one(name: str) -> Explorer | None:
+def get_one(name: str) -> Explorer:
     return service.get_one(name)
 
 
