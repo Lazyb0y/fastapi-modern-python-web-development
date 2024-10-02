@@ -14,10 +14,6 @@ def create(explorer: Explorer) -> Explorer | None:
     return data.create(explorer)
 
 
-def replace(explorer: Explorer) -> Explorer:
-    return data.replace(explorer)
-
-
 def modify(explorer: Explorer) -> Explorer | None:
     return data.modify(explorer)
 

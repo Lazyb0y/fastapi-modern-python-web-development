@@ -28,12 +28,6 @@ def modify(creature: Creature) -> Creature | None:
     return service.modify(creature)
 
 
-@router.get("")
-@router.put("/")
-def replace(creature: Creature) -> Creature:
-    return service.replace(creature)
-
-
 @router.delete("/{name}")
 def delete(name: str) -> bool:
     return service.delete(name)

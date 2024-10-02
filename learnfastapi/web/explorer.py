@@ -28,12 +28,6 @@ def modify(explorer: Explorer) -> Explorer | None:
     return service.modify(explorer)
 
 
-@router.get("")
-@router.put("/")
-def replace(explorer: Explorer) -> Explorer:
-    return service.replace(explorer)
-
-
 @router.delete("/{name}")
 def delete(name: str) -> bool:
     return service.delete(name)
