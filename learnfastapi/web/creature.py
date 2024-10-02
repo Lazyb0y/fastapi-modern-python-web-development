@@ -22,10 +22,9 @@ def create(creature: Creature) -> Creature | None:
     return service.create(creature)
 
 
-@router.patch("")
-@router.patch("/")
-def modify(creature: Creature) -> Creature | None:
-    return service.modify(creature)
+@router.patch("/{name}")
+def modify(name: str, creature: Creature) -> Creature | None:
+    return service.modify(name, creature)
 
 
 @router.delete("/{name}")

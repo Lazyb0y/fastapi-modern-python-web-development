@@ -14,8 +14,8 @@ def create(explorer: Explorer) -> Explorer | None:
     return data.create(explorer)
 
 
-def modify(explorer: Explorer) -> Explorer | None:
-    return data.modify(explorer)
+def modify(name: str, explorer: Explorer) -> Explorer | None:
+    return data.modify(name, explorer)
 
 
 def delete(name: str) -> bool:

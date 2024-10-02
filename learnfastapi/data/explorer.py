@@ -56,8 +56,8 @@ def create(explorer: Explorer) -> Explorer | None:
     return get_one(explorer.name)
 
 
-def modify(explorer: Explorer) -> Explorer | None:
-    if not explorer:
+def modify(name: str, explorer: Explorer) -> Explorer | None:
+    if not (name and explorer):
         return None
 
     qry = """UPDATE explorer
@@ -66,14 +66,14 @@ def modify(explorer: Explorer) -> Explorer | None:
                  description=:description
              WHERE name=:name_orig"""
     params = model_to_dict(explorer)
-    params["name_orig"] = explorer.name
+    params["name_orig"] = name
     _ = curs.execute(qry, params)
     conn.commit()
 
     if curs.rowcount == 1:
-        return get_one(explorer.name)
+        return get_one(name)
     else:
-        raise MissingError(f"Explorer {explorer.name} not found")
+        raise MissingError(f"Explorer {name} not found")
 
 
 def delete(name: str) -> bool:

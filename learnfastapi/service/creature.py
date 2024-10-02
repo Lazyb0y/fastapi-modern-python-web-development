@@ -14,8 +14,8 @@ def create(creature: Creature) -> Creature | None:
     return data.create(creature)
 
 
-def modify(creature: Creature) -> Creature | None:
-    return data.modify(creature)
+def modify(name: str, creature: Creature) -> Creature | None:
+    return data.modify(name, creature)
 
 
 def delete(name: str) -> bool:

@@ -60,8 +60,8 @@ def create(creature: Creature) -> Creature | None:
     return get_one(creature.name)
 
 
-def modify(creature: Creature) -> Creature | None:
-    if not creature:
+def modify(name: str, creature: Creature) -> Creature | None:
+    if not (name and creature):
         return None
 
     qry = """UPDATE creature
@@ -72,14 +72,14 @@ def modify(creature: Creature) -> Creature | None:
                  aka=:aka
              WHERE name=:name_orig"""
     params = model_to_dict(creature)
-    params["name_orig"] = creature.name
+    params["name_orig"] = name
     _ = curs.execute(qry, params)
     conn.commit()
 
     if curs.rowcount == 1:
-        return get_one(creature.name)
+        return get_one(name)
     else:
-        raise MissingError(f"Creature {creature.name} not found")
+        raise MissingError(f"Creature {name} not found")
 
 
 def delete(name: str) -> bool:

@@ -22,10 +22,9 @@ def create(explorer: Explorer) -> Explorer | None:
     return service.create(explorer)
 
 
-@router.patch("")
-@router.patch("/")
-def modify(explorer: Explorer) -> Explorer | None:
-    return service.modify(explorer)
+@router.patch("/{name}")
+def modify(name: str, explorer: Explorer) -> Explorer | None:
+    return service.modify(name, explorer)
 
 
 @router.delete("/{name}")
