@@ -5,5 +5,5 @@ class Creature(BaseModel):
     name: str
     country: str
     area: str
-    description: str
+    description: str | None = None
     aka: str
