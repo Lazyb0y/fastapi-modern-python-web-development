@@ -53,6 +53,7 @@ def modify(explorer: Explorer) -> Explorer:
     params["name_orig"] = explorer.name
     _ = curs.execute(qry, params)
     return get_one(explorer.name)
+    conn.commit()
 
 
 def delete(name: str) -> bool:
@@ -60,3 +61,4 @@ def delete(name: str) -> bool:
     params = {"name": name}
     res = curs.execute(qry, params)
     return bool(res)
+    conn.commit()

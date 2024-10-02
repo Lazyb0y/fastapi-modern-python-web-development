@@ -59,6 +59,7 @@ def modify(creature: Creature) -> Creature:
     params["name_orig"] = creature.name
     _ = curs.execute(qry, params)
     return get_one(creature.name)
+    conn.commit()
 
 
 def delete(name: str) -> bool:
@@ -66,3 +67,4 @@ def delete(name: str) -> bool:
     params = {"name": name}
     res = curs.execute(qry, params)
     return bool(res)
+    conn.commit()
