@@ -32,7 +32,7 @@ def get_one(name: str) -> Creature:
     _ = curs.execute(qry, params)
     row = curs.fetchone()
     if row:
-        return row_to_model(curs.fetchone())
+        return row_to_model(row)
     else:
         raise MissingError(f"Creature {name} not found")
 
