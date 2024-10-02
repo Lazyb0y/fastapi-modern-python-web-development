@@ -18,13 +18,13 @@ def get_one(name: str) -> Explorer | None:
 
 @router.get("")
 @router.post("/")
-def create(explorer: Explorer) -> Explorer:
+def create(explorer: Explorer) -> Explorer | None:
     return service.create(explorer)
 
 
 @router.get("")
 @router.patch("/")
-def modify(explorer: Explorer) -> Explorer:
+def modify(explorer: Explorer) -> Explorer | None:
     return service.modify(explorer)
 
 

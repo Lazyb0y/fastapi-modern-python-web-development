@@ -18,13 +18,13 @@ def get_one(name: str) -> Creature | None:
 
 @router.get("")
 @router.post("/")
-def create(creature: Creature) -> Creature:
+def create(creature: Creature) -> Creature | None:
     return service.create(creature)
 
 
 @router.get("")
 @router.patch("/")
-def modify(creature: Creature) -> Creature:
+def modify(creature: Creature) -> Creature | None:
     return service.modify(creature)
 
 

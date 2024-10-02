@@ -10,7 +10,7 @@ def get_one(name: str) -> Creature | None:
     return data.get_one(name)
 
 
-def create(creature: Creature) -> Creature:
+def create(creature: Creature) -> Creature | None:
     return data.create(creature)
 
 
@@ -18,7 +18,7 @@ def replace(creature: Creature) -> Creature:
     return data.replace(creature)
 
 
-def modify(creature: Creature) -> Creature:
+def modify(creature: Creature) -> Creature | None:
     return data.modify(creature)
 
 
