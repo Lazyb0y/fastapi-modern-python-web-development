@@ -16,13 +16,13 @@ def get_one(name: str) -> Creature:
     return service.get_one(name)
 
 
-@router.get("")
+@router.post("")
 @router.post("/")
 def create(creature: Creature) -> Creature | None:
     return service.create(creature)
 
 
-@router.get("")
+@router.patch("")
 @router.patch("/")
 def modify(creature: Creature) -> Creature | None:
     return service.modify(creature)
