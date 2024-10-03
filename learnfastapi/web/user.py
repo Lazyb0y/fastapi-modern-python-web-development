@@ -90,7 +90,7 @@ def modify(name: str, user: User) -> User:
 
 
 @router.delete("/{name}")
-def delete(name: str) -> None:
+def delete(name: str) -> bool:
     try:
         return service.delete(name)
     except MissingError as e:

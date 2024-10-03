@@ -48,7 +48,7 @@ def modify(name: str, user: User) -> User:
     return user
 
 
-def delete(name: str) -> None:
+def delete(name: str) -> bool:
     """Delete a user"""
     check_missing(name)
-    return None
+    return True
