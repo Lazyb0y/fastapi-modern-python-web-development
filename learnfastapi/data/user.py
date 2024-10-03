@@ -27,7 +27,7 @@ def model_to_dict(user: User) -> dict | None:
 
 
 def get_one(name: str) -> User:
-    qry = "SELECT * FROM user WHERE name:=name"
+    qry = "SELECT * FROM user WHERE name=:name"
     params = {"name": name}
     _ = curs.execute(qry, params)
     row = curs.fetchone()
