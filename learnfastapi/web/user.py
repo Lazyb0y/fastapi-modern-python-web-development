@@ -81,7 +81,7 @@ def create(user: User) -> User:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=e.message)
 
 
-@router.patch("/")
+@router.patch("/{name}")
 def modify(name: str, user: User) -> User:
     try:
         return service.modify(name, user)
