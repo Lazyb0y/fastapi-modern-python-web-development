@@ -26,8 +26,8 @@ def model_to_dict(user: User) -> dict | None:
         return None
 
 
-def get_one(name: str) -> User:
-    qry = "SELECT * FROM user WHERE name=:name"
+def get_one(name: str, table: str = "user") -> User:
+    qry = f"SELECT * FROM {table} WHERE name=:name"
     params = {"name": name}
     _ = curs.execute(qry, params)
     row = curs.fetchone()
@@ -58,7 +58,7 @@ def create(user: User, table: str = "user") -> User | None:
     except IntegrityError:
         raise DuplicateError(f"User {user.name} already exists")
 
-    return get_one(user.name)
+    return get_one(user.name, table)
 
 
 def modify(name: str, user: User) -> User | None:
