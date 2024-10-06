@@ -67,8 +67,8 @@ def modify(name: str, user: User) -> User | None:
 
     qry = """UPDATE user
              SET name=:name,
-                 hash:=hash
-             WHERE name:=name_orig"""
+                 hash=:hash
+             WHERE name=:name_orig"""
     params = model_to_dict(user)
     params["name_orig"] = name
     _ = curs.execute(qry, params)
@@ -88,7 +88,7 @@ def delete(name: str) -> bool:
     if not user:
         raise MissingError(f"User {name} not found")
 
-    qry = "DELETE FROM user WHERE name:=name"
+    qry = "DELETE FROM user WHERE name=:name"
     params = {"name": name}
     _ = curs.execute(qry, params)
     conn.commit()
