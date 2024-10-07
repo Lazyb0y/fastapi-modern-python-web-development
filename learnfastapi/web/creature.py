@@ -1,7 +1,13 @@
+import os
+
 from fastapi import status, APIRouter, HTTPException
 from learnfastapi.errors import DuplicateError, MissingError
 from learnfastapi.model.creature import Creature
-import learnfastapi.service.creature as service
+
+if os.getenv("CRYPTID_UNIT_TEST"):
+    from learnfastapi.fake import creature as service
+else:
+    from learnfastapi.service import creature as service
 
 router = APIRouter(prefix="/creature")
 
