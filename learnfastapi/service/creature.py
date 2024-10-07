@@ -1,5 +1,11 @@
+import os
+
 from learnfastapi.model.creature import Creature
-import learnfastapi.data.creature as data
+
+if os.getenv("CRYPTID_UNIT_TEST"):
+    from learnfastapi.fake import creature as data
+else:
+    from learnfastapi.data import creature as data
 
 
 def get_all() -> list[Creature]:
