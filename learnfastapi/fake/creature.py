@@ -1,3 +1,4 @@
+from learnfastapi.errors import MissingError
 from learnfastapi.model.creature import Creature
 
 _creatures = [
@@ -22,11 +23,12 @@ def get_all() -> list[Creature]:
     return _creatures
 
 
-def get_one(name: str) -> Creature | None:
+def get_one(name: str) -> Creature:
     for creature in _creatures:
         if creature.name == name:
             return creature
-    return None
+
+    raise MissingError(f"Creature {name} not found")
 
 
 # The following are nonfunctional for now,
