@@ -32,11 +32,6 @@ def modify(explorer: Explorer) -> Explorer:
     return explorer
 
 
-def replace(explorer: Explorer) -> Explorer:
-    """Completely replace an explorer"""
-    return explorer
-
-
 def delete(name: str) -> bool:
     """Delete an explorer"""
     return True

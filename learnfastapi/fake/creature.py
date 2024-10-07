@@ -63,11 +63,6 @@ def modify(name: str, creature: Creature) -> Creature:
     return creature
 
 
-def replace(creature: Creature) -> Creature:
-    """Completely replace a creature"""
-    return creature
-
-
 def delete(name: str) -> bool:
     """Delete a creature"""
     check_missing(name)
