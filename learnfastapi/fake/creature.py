@@ -1,4 +1,4 @@
-from learnfastapi.errors import MissingError
+from learnfastapi.errors import DuplicateError, MissingError
 from learnfastapi.model.creature import Creature
 
 _creatures = [
@@ -19,6 +19,23 @@ _creatures = [
 ]
 
 
+def find(name: str) -> Creature | None:
+    for e in _creatures:
+        if e.name == name:
+            return e
+    return None
+
+
+def check_duplicate(name: str):
+    if find(name):
+        raise DuplicateError(message=f"Creature {name} already exists")
+
+
+def check_missing(name: str):
+    if not find(name):
+        raise MissingError(message=f"Creature {name} not found")
+
+
 def get_all() -> list[Creature]:
     return _creatures
 
@@ -36,11 +53,13 @@ def get_one(name: str) -> Creature:
 # the actual fake _creatures list:
 def create(creature: Creature) -> Creature:
     """Add a creature"""
+    check_duplicate(creature.name)
     return creature
 
 
-def modify(creature: Creature) -> Creature:
+def modify(name: str, creature: Creature) -> Creature:
     """Partially modify a creature"""
+    check_missing(name)
     return creature
 
 
@@ -51,4 +70,5 @@ def replace(creature: Creature) -> Creature:
 
 def delete(name: str) -> bool:
     """Delete a creature"""
+    check_missing(name)
     return True
