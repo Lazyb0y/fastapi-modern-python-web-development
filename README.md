@@ -22,3 +22,8 @@ Companion for the O'Reilly book "FastAPI: Modern Python Web Development"
     ```sh
     pre-commit run --all-files
     ```
+
+### Run Automated Full Tests
+```sh
+schemathesis run [BASE_URL]/openapi.json
+```
