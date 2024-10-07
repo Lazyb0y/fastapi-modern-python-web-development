@@ -5,7 +5,7 @@ app = FastAPI()
 
 # Activate the CORS middleware
 app.add_middleware(
-    CORSMiddleware,
+    CORSMiddleware,  # type: ignore
     allow_origins=[
         "http://localhost:8090/",
     ],
