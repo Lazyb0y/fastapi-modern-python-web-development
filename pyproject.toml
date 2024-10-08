@@ -31,7 +31,6 @@ faker = "^30.3.0"
 
 [tool.poetry.group.ai.dependencies]
 torch = "^2.4.1"
-torchvision = "^0.19.1"
 transformers = "^4.45.2"
 
 [build-system]
