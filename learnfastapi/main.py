@@ -1,7 +1,9 @@
+from pathlib import Path
 from typing import Generator
 
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 
 from learnfastapi.web import explorer, creature, user
 
@@ -10,6 +12,11 @@ app = FastAPI()
 app.include_router(explorer.router)
 app.include_router(creature.router)
 app.include_router(user.router)
+
+# Directory containing main.py:
+top = Path(__file__).resolve().parent
+
+app.mount("/static", StaticFiles(directory=f"{top}/static", html=True), name="free")
 
 
 def gen_file(path: str) -> Generator:
