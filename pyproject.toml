@@ -17,6 +17,7 @@ passlib = "^1.7.4"
 python-multipart = "^0.0.12"
 hypothesis = "^6.112.4"
 schemathesis = "^3.36.4"
+aiofiles = "^24.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
