@@ -1,9 +1,10 @@
 from pathlib import Path
 from typing import Generator
 
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from learnfastapi.web import explorer, creature, user
 
@@ -15,6 +16,21 @@ app.include_router(user.router)
 
 # Directory containing main.py:
 top = Path(__file__).resolve().parent
+
+template_obj = Jinja2Templates(directory=f"{top}/template")
+
+# Get some small predefined lists of our buddies:
+from learnfastapi.fake.creature import _creatures as fake_creatures
+from learnfastapi.fake.explorer import _explorers as fake_explorers
+
+
+@app.get("/list")
+def explorer_list(request: Request):
+    return template_obj.TemplateResponse(
+        "list.html",
+        {"request": request, "explorers": fake_explorers, "creatures": fake_creatures},
+    )
+
 
 app.mount("/static", StaticFiles(directory=f"{top}/static", html=True), name="free")
 
