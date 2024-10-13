@@ -51,6 +51,11 @@ def greet2(name: str = Form()):
     return f"Hello, {name}?"
 
 
+@app.post("/who2")
+def greet2(name: str = Form()):
+    return f"Hello, {name}?"
+
+
 if __name__ == "__main__":
     import uvicorn
 
