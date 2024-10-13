@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Generator
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -44,6 +44,11 @@ async def download_big_file(name: str):
     gen_expr = gen_file(path=name)
     response = StreamingResponse(content=gen_expr, status_code=200)
     return response
+
+
+@app.get("/who2")
+def greet2(name: str = Form()):
+    return f"Hello, {name}?"
 
 
 if __name__ == "__main__":
