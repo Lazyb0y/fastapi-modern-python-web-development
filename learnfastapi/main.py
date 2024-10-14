@@ -6,13 +6,14 @@ from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from learnfastapi.web import explorer, creature, user
+from learnfastapi.web import explorer, creature, user, game
 
 app = FastAPI()
 
 app.include_router(explorer.router)
 app.include_router(creature.router)
 app.include_router(user.router)
+app.include_router(game.router)
 
 # Directory containing main.py:
 top = Path(__file__).resolve().parent
