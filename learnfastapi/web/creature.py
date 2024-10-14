@@ -1,3 +1,4 @@
+from collections import Counter
 import os
 
 from fastapi import status, APIRouter, HTTPException, Response
@@ -50,6 +51,22 @@ def delete(name: str) -> bool:
         return service.delete(name)
     except MissingError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.message)
+
+
+@router.get("/plot/creatures")
+def plot():
+    creatures = service.get_all()
+    letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    counts = Counter(creature.name[0] for creature in creatures)
+    y = {letter: counts.get(letter, 0) for letter in letters}
+    fig = px.histogram(
+        x=list(letters),
+        y=y,
+        title="Creature Names",
+        labels={"x": "Initial", "y": "Initial"},
+    )
+    fig_bytes = fig.to_image(format="png")
+    return Response(content=fig_bytes, media_type="image/png")
 
 
 @router.get("/plot/test")
