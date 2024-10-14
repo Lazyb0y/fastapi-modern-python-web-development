@@ -1,6 +1,7 @@
 import os
 
-from fastapi import status, APIRouter, HTTPException
+from fastapi import status, APIRouter, HTTPException, Response
+import plotly.express as px
 from learnfastapi.errors import DuplicateError, MissingError
 from learnfastapi.model.creature import Creature
 
@@ -49,3 +50,11 @@ def delete(name: str) -> bool:
         return service.delete(name)
     except MissingError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=e.message)
+
+
+@router.get("/plot/test")
+def test():
+    df = px.data.iris()
+    fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
+    fig_bytes = fig.to_image(format="png")
+    return Response(content=fig_bytes, media_type="image/png")
