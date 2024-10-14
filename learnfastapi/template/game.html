@@ -49,7 +49,7 @@
         for (var i = 0; i < vals.length; i++) {
             guess += vals[i].value;
         }
-        var req = new Request("http://localhost:8090/game", {
+        var req = new Request("/game", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({"guess": guess, "word": word})
