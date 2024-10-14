@@ -1,9 +1,15 @@
 from collections import Counter, defaultdict
 
+from learnfastapi.data import game as data
+
 HIT = "H"  # right letter and position
 MISS = "M"  # letter not in word
 CLOSE = "C"  # letter is in the word, but at another position
 ERROR = ""  # error
+
+
+def get_word() -> str:
+    return data.get_word()
 
 
 def get_score(actual: str, guess: str) -> str:
