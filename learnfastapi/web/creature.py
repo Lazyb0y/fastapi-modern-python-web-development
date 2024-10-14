@@ -3,6 +3,8 @@ import os
 
 from fastapi import status, APIRouter, HTTPException, Response
 import plotly.express as px
+import country_converter as coco
+
 from learnfastapi.errors import DuplicateError, MissingError
 from learnfastapi.model.creature import Creature
 
@@ -73,5 +75,15 @@ def plot():
 def test():
     df = px.data.iris()
     fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
+    fig_bytes = fig.to_image(format="png")
+    return Response(content=fig_bytes, media_type="image/png")
+
+
+@router.get("/plot/map")
+def country_map() -> Response:
+    creatures = service.get_all()
+    iso2_codes = set(creature.country for creature in creatures)
+    iso3_codes = coco.convert(names=iso2_codes, to="ISO3")
+    fig = px.choropleth(locationmode="ISO-3", locations=iso3_codes)
     fig_bytes = fig.to_image(format="png")
     return Response(content=fig_bytes, media_type="image/png")
