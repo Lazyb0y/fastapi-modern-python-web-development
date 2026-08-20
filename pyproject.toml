@@ -12,7 +12,7 @@ uvicorn = "^0.30.6"
 httpie = "^3.2.3"
 requests = "2.33.0"
 httpx = "^0.28.1"
-python-jose = {version = "^3.4.0", extras = ["cryptography"]}
+python-jose = {version = "^3.5.0", extras = ["cryptography"]}
 passlib = "^1.7.4"
 python-multipart = "^0.0.12"
 hypothesis = "^6.112.4"
